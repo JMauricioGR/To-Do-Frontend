@@ -21,6 +21,16 @@ function reducer(state, action){
       const newListOfNotesWhitModification = [...newListOfNotes, action.payload]
       const newStateModifiedCheckbox = {...state, listOfNotes: newListOfNotesWhitModification}
       return newStateModifiedCheckbox
+    case `add-category`:
+      const newCategory = {
+        id: Math.floor(Math.random()*100000),
+        categoryTitle: action.payload.categoryTitle
+      }
+      const newListOfCategories = [...state.listCategories, newCategory]
+      const newStateAddCategory = {
+        ...state, listCategories: newListOfCategories
+      }
+      return newStateAddCategory
   }
 }
 

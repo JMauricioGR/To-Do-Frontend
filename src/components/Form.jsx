@@ -23,8 +23,6 @@ const Form = () => {
 
   const [title, setTitle] = useState('')
 
-  const [message, setMessage] = useState('')
-
   const addingTitle = (e) => {
     setTitle(e.target.value)
   }

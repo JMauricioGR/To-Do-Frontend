@@ -6,15 +6,32 @@ const initialState = {
     id: ``,
     title: ``,
     done: false,
-    category:``
+    categoryNote:``
   },
   listOfNotes: [
     {
       id: `0`,
       title: `Title by default`,
       done: true,
-      category: `Category by`
+      categoryNote: `Category by`
+    },
+    {
+      id: `1`,
+      title: `Title2 by default`,
+      done: true,
+      categoryNote: `Category by`
     }
+  ],category:{
+    categoryTitle: ``
+  },
+  listCategories:[
+    {
+      id:'0',
+      categoryTitle:`Category by defaul`},
+    {
+      id:'1',
+      categoryTitle:`Category2 by defaul`}
+
   ]
 }
 

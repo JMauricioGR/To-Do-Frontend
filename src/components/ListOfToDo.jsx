@@ -36,8 +36,12 @@ const ListOfToDo = () => {
   }
 
   return (
-    <div>
-      <h3>Category: </h3>
+    <>
+    {state.listCategories.map(category => {
+      console.log(category);
+      return <div key={category.id}> 
+      <h3 style={{display: 'inline-block'}}>Category: {category.categoryTitle}</h3>
+      <button>Delete</button>
       <Form />
       <ul>
         {state.listOfNotes.map(note => {
@@ -51,6 +55,8 @@ const ListOfToDo = () => {
       </ul>
       
     </div>
+    })}
+    </>    
   )
 }
 
