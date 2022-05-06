@@ -6,14 +6,16 @@ const initialState = {
     id: ``,
     title: ``,
     message: ``,
-    done: false
+    done: false,
+    category:``
   },
   listOfNotes: [
     {
       id: `0`,
       title: `Title by default`,
       message: `Message by default`,
-      done: true
+      done: true,
+      category: `Category by default`
     }
   ]
 }

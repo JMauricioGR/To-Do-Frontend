@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Store } from './StoreProvider'
 
-const ListOfToDo = () => {
+const ListOfToDo = ({ categoryOfToDo }) => {
 
   const {state, dispatch} = useContext(Store)
 
@@ -24,7 +24,7 @@ const ListOfToDo = () => {
 
   return (
     <div>
-      <h1>Actions pending to be done</h1>
+      <h1>Category: {categoryOfToDo}</h1>
       <ul>
         {state.listOfNotes.map(note => {
           return <li style={note.done?{textDecoration: 'line-through'}:{}} key={note.id}>
