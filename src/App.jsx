@@ -17,9 +17,8 @@ function App() {
   return (
     <StoreProvider>
       <h1>Dashboard</h1>
-      <Category onAdd={addCategory}/>
-      <Form />
-      <ListOfToDo categoryOfToDo={catToDo}/>
+      <Category onAdd={addCategory}/>     
+      <ListOfToDo />
     </StoreProvider>
   )
 }

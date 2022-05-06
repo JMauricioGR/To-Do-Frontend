@@ -3,7 +3,6 @@ function reducer(state, action){
     case `add-note`:
       const newNote = {
         id: Math.floor(Math.random() * 300),
-        message: action.payload.message,
         title: action.payload.title,
         done: false
       }

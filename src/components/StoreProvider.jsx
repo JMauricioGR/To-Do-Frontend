@@ -5,7 +5,6 @@ const initialState = {
   note:{
     id: ``,
     title: ``,
-    message: ``,
     done: false,
     category:``
   },
@@ -13,9 +12,8 @@ const initialState = {
     {
       id: `0`,
       title: `Title by default`,
-      message: `Message by default`,
       done: true,
-      category: `Category by default`
+      category: `Category by`
     }
   ]
 }
