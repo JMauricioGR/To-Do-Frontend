@@ -6,6 +6,25 @@ const ListOfToDo = () => {
 
   const {state, dispatch} = useContext(Store)
 
+  useEffect(() =>{
+    let listOfNote = fectchAllNotes().then(
+      notes =>{
+        let action = {
+          type: `get-notes`,
+          payload: notes
+        }
+
+        dispatch(action)
+      }
+    )
+  },[])
+
+  const fectchAllNotes = async()=>{
+    let response = await fetch('http://localhost:8081/api/v1/get/todos')
+    let data = await response.json()
+    return data
+  }
+
   const onCheckbox = (event, note) => {
     const checked = event.currentTarget.checked;
 
