@@ -1,18 +1,36 @@
 import React, { useContext, useState, useRef } from 'react'
 import { Store } from './StoreProvider';
 
-const Form = () => {
+const Form = ({ category }) => {
 
   const formRef = useRef(null)
 
-  const onAdd = (event) => {
+  
+  const onAdd = async (event) => {
     event.preventDefault();
-    if(title){
+    console.log(event)
+    if(todo){
+      const noteFromForm = {
+        todo,
+        done: false,
+        category
+
+      }
+      let noteSavedPromise = await fetch('http://localhost:8081/api/v1/save/todo', 
+      {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify(noteFromForm)
+      })
+
+      let noteSaved = await noteSavedPromise.json();
+
+      console.log(noteSaved);
       dispatch({
         type: `add-note`,
-        payload: {
-          title,
-        }
+        payload: noteSaved
       })
 
       formRef.current.reset();
@@ -21,17 +39,17 @@ const Form = () => {
 
   const {state, dispatch} = useContext(Store)
 
-  const [title, setTitle] = useState('')
+  const [todo, setTodo] = useState('')
 
   const addingTitle = (e) => {
-    setTitle(e.target.value)
+    setTodo(e.target.value)
   }
   
 
   return (
     <form ref={formRef}>
       <label>Title:</label>
-      <input onChange={addingTitle} type="text" name='title'/>
+      <input onChange={addingTitle} type="text" name='todo'/>
       <button onClick={onAdd}>Add note</button>
     </form>
   )

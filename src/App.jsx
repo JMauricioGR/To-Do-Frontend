@@ -10,7 +10,6 @@ function App() {
   const [catToDo, setCatToDo] = useState('')
   
   const addCategory = (category) =>{
-    console.log(category);
     setCatToDo(category)
   }
 

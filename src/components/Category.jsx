@@ -28,7 +28,6 @@ const Category = ({ onAdd }) => {
     
   }
 
-  console.log(state);
   return (
     <div>
       

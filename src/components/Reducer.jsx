@@ -5,11 +5,11 @@ function reducer(state, action){
         ...state,
         listOfNotes: action.payload
       }
+      console.log(state.listOfNotes);
       return stateWithAllTheNotes
     case `add-note`:
       const newNote = {
-        id: Math.floor(Math.random() * 300),
-        title: action.payload.title,
+        todo: action.payload.todo,
         done: false
       }
       const newListOfNotesAddesdOne = [...state.listOfNotes, newNote]
@@ -22,10 +22,13 @@ function reducer(state, action){
       const newStateWithNoteDeleted = {...state, listOfNotes: newListOfNotesWithoutPayloadNote}
       return newStateWithNoteDeleted
     case `update-note`:
-      const newListOfNotes = state.listOfNotes.filter(note => note.id !== action.payload.id)
-      
-      const newListOfNotesWhitModification = [...newListOfNotes, action.payload]
-      const newStateModifiedCheckbox = {...state, listOfNotes: newListOfNotesWhitModification}
+      const newListOfNotes = state.listOfNotes.map(note => {
+        if(note.id === action.payload.id){
+          return action.payload
+        }
+        return note
+      })
+      const newStateModifiedCheckbox = {...state, listOfNotes: newListOfNotes}
       return newStateModifiedCheckbox
     case `add-category`:
       const newCategory = {

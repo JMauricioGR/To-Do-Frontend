@@ -9,18 +9,7 @@ const initialState = {
     categoryNote:``
   },
   listOfNotes: [
-    {
-      id: `0`,
-      title: `Title by default`,
-      done: true,
-      categoryNote: `Category by`
-    },
-    {
-      id: `1`,
-      title: `Title2 by default`,
-      done: true,
-      categoryNote: `Category by`
-    }
+    
   ],category:{
     categoryTitle: ``
   },
@@ -28,9 +17,9 @@ const initialState = {
     {
       id:'0',
       categoryTitle:`Category by defaul`},
-    {
-      id:'1',
-      categoryTitle:`Category2 by defaul`}
+    // {
+    //   id:'1',
+    //   categoryTitle:`Category2 by defaul`}
 
   ]
 }
