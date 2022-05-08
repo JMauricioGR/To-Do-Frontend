@@ -17,7 +17,8 @@ function reducer(state, action){
     case `add-note`:
       const newNote = {
         todo: action.payload.todo,
-        done: false
+        done: false,
+        categoryid: action.payload.categoryid
       }
       const newListOfNotesAddesdOne = [...state.listOfNotes, newNote]
       const newStateAddNote = {

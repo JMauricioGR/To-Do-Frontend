@@ -76,16 +76,20 @@ const ListOfToDo = () => {
     })
   }
 
+
+  const [categoryid, setCategoryid] = useState('')
+
   return (
     <>
     {state.listCategories.map(category => {
       return <div key={category.id}> 
       <h3 style={{display: 'inline-block'}}>Category: {category.category}</h3>
       <button>Delete</button>
-      <Form  category={category.category}/>
+      <Form  category={category.id}/>
       <ul>
         {state.listOfNotes.map(note => {
-          if(note.category === category.category){
+          console.log(JSON.stringify(note) +"and the category data is: " + JSON.stringify(category));
+          if(note.categoryid.id === category.id){
             return <li style={note.done?{textDecoration: 'line-through'}:{}} key={note.id}>
             {note.todo} 
             <input onChange={(event) => onCheckbox(event, note)} type="checkbox" checked={note.done} />

@@ -12,9 +12,10 @@ const Form = ({ category }) => {
       const noteFromForm = {
         todo,
         done: false,
-        category
-
+        categoryid: category
+        
       }
+      console.log(noteFromForm);
       let noteSavedPromise = await fetch('http://localhost:8081/api/v1/save/todo', 
       {
         method: 'POST',
@@ -26,7 +27,6 @@ const Form = ({ category }) => {
 
       let noteSaved = await noteSavedPromise.json();
 
-      console.log(noteSaved);
       dispatch({
         type: `add-note`,
         payload: noteSaved
