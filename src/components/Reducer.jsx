@@ -1,5 +1,12 @@
 function reducer(state, action){
   switch(action.type){
+    case `get-categories`:
+      const stateWithAllCategories ={
+        ...state, 
+        listCategories: action.payload
+      }
+      console.log(state.listCategories);
+      return stateWithAllCategories
     case `get-notes`:
       const stateWithAllTheNotes = {
         ...state,
@@ -33,7 +40,7 @@ function reducer(state, action){
     case `add-category`:
       const newCategory = {
         id: Math.floor(Math.random()*100000),
-        categoryTitle: action.payload.categoryTitle
+        category: action.payload.category
       }
       const newListOfCategories = [...state.listCategories, newCategory]
       const newStateAddCategory = {

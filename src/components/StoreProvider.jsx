@@ -8,20 +8,11 @@ const initialState = {
     done: false,
     categoryNote:``
   },
-  listOfNotes: [
-    
-  ],category:{
+  listOfNotes: [],
+  category:{
     categoryTitle: ``
   },
-  listCategories:[
-    {
-      id:'0',
-      categoryTitle:`Category by defaul`},
-    // {
-    //   id:'1',
-    //   categoryTitle:`Category2 by defaul`}
-
-  ]
+  listCategories:[]
 }
 
 const Store = createContext(initialState)

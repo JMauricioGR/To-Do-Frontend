@@ -8,7 +8,6 @@ const Form = ({ category }) => {
   
   const onAdd = async (event) => {
     event.preventDefault();
-    console.log(event)
     if(todo){
       const noteFromForm = {
         todo,

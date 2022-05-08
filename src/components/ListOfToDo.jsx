@@ -17,6 +17,7 @@ const ListOfToDo = () => {
         dispatch(action)
       }
     )
+    
   }, [])
 
   const fetchAllNotes = async()=>{
@@ -47,11 +48,21 @@ const ListOfToDo = () => {
     })
   }
 
-  const onDelete = (note) => {
-    dispatch({
-      type: `remove-note`,
-      payload: note
+  const onDelete = async (note) => {
+    let response = await fetch(`http://localhost:8081/api/v1/delete/todo/${note.id}`, 
+    {
+      method: 'DELETE',
     })
+
+    console.log(response);
+    if(response.status === 200){
+      dispatch({
+        type: `remove-note`,
+        payload: note
+      })
+    }
+
+    
   }
 
   const onEdit = (event, note) => {
@@ -64,24 +75,25 @@ const ListOfToDo = () => {
       todo: titleToDo}
     })
   }
-  
-  const [category, setCategory] = useState('')
 
   return (
     <>
     {state.listCategories.map(category => {
       return <div key={category.id}> 
-      <h3 style={{display: 'inline-block'}}>Category: {category.categoryTitle}</h3>
+      <h3 style={{display: 'inline-block'}}>Category: {category.category}</h3>
       <button>Delete</button>
-      <Form  category={category.categoryTitle}/>
+      <Form  category={category.category}/>
       <ul>
         {state.listOfNotes.map(note => {
-          return <li style={note.done?{textDecoration: 'line-through'}:{}} key={note.id}>
+          if(note.category === category.category){
+            return <li style={note.done?{textDecoration: 'line-through'}:{}} key={note.id}>
             {note.todo} 
             <input onChange={(event) => onCheckbox(event, note)} type="checkbox" checked={note.done} />
             <button onClick={() => onDelete(note)}>Delete</button>
             <button onClick={() => onEdit(note)}>Edit</button>
           </li>
+          }
+          
         })}
       </ul>
       
