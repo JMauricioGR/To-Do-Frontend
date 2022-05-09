@@ -31,10 +31,13 @@ const ListOfToDo = () => {
 
 
   const onDelete = async (note) => {
+    console.log(note.id)
     let response = await fetch(`http://localhost:8081/api/v1/delete/todo/${note.id}`,
       {
         method: 'DELETE',
       })
+
+    console.log(response)
 
     if (response.status === 200) {
       dispatch({
@@ -130,21 +133,21 @@ const ListOfToDo = () => {
 
         return <div key={category.id}>
           <h3 style={{ display: 'inline-block' }}>Category: {category.category}</h3>
-          <button onClick={() => onCatDelete(category)}>Delete</button>
+          <button onClick={() => onCatDelete(category)} className="btn btn-primary m-2">Delete</button>
           <Form category={category.id} />
           <div style={{display: 'none'}} id={`div-${category.id}`}>
             <label>Text to uptade </label>
-            <input id={`inp-edit-${category.id}`} ></input>
-            <button onClick={(event) => onUpdateNote(todo)}>Update</button>
+            <input id={`inp-edit-${category.id}`} className="form-control"></input>
+            <button onClick={(event) => onUpdateNote(todo) } className="btn btn-primary m-2">Update</button>
           </div>
-          <ul>
+          <ul className="list-unstyled">
             {state.listOfNotes.map(note => {
               if (note.categoryid.id === category.id) {
-                return <li style={note.done ? { textDecoration: 'line-through' } : {}} key={note.id}>
+                return <li style={note.done ? { textDecoration: 'line-through' } : {}} key={note.id} className="m-2">
                   {note.todo}
-                  <input onChange={(event) => onCheckbox(event, note)} type="checkbox" checked={note.done} />
-                  <button onClick={() => onDelete(note)}>Delete</button>
-                  <button onClick={() => onEdit(note)}>Edit</button>
+                  <input onChange={(event) => onCheckbox(event, note)} type="checkbox" checked={note.done} className="m-2" />
+                  <button onClick={() => onDelete(note)} className="btn btn-primary m-2">Delete</button>
+                  <button onClick={() => onEdit(note)} className="btn btn-primary m-2">Edit</button>
                 </li>
               }
             })}

@@ -62,9 +62,9 @@ const Category = ({ onAdd }) => {
   return (
     <div>
       
-      <label>Category: </label>
-      <input type="text" placeholder='Category name' value={category} onChange={(e) => setCategory(e.target.value)}></input>
-      <button onClick={addCategory}>Add</button>
+      <label>Category:   </label>
+      <input type="text" placeholder='Category name' value={category} onChange={(e) => setCategory(e.target.value)} className="form-control"></input>
+      <button onClick={addCategory} className="btn btn-primary m-2">Add</button>
 
     </div>
   )

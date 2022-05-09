@@ -47,9 +47,9 @@ const Form = ({ category }) => {
 
   return (
     <form ref={formRef}>
-      <label>Title:</label>
-      <input onChange={addingTitle} type="text" name='todo'/>
-      <button onClick={onAdd}>Add note</button>
+      <label className=" font-weight-normal col-sm-2 col-form-label">To do: </label>
+      <input onChange={addingTitle} type="text" name='todo' className="form-control" />
+      <button onClick={onAdd} className="btn btn-primary m-2">Add note</button>
     </form>
   )
 }

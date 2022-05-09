@@ -14,10 +14,10 @@ function App() {
   }
 
   return (
-    <StoreProvider>
+    <StoreProvider className="container d-flex flex-wrap justify-content-center align-content-center">
       <h1>Dashboard</h1>
-      <Category onAdd={addCategory}/>     
-      <ListOfToDo />
+      <Category onAdd={addCategory} className="col-lg-7 col-md-10 col-sm-12 border" />     
+      <ListOfToDo className="col-lg-7 col-md-10 col-sm-12" />
     </StoreProvider>
   )
 }
