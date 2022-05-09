@@ -1,38 +1,80 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Store } from './StoreProvider'
 import Form from './Form'
-import Category from './Category'
+
 
 const ListOfToDo = () => {
 
-  const {state, dispatch} = useContext(Store)
 
-  useEffect(() =>{
+
+  const { state, dispatch } = useContext(Store)
+
+  useEffect(() => {
     let listOfNote = fetchAllNotes().then(
-      notes =>{
+      notes => {
         let action = {
           type: `get-notes`,
           payload: notes
         }
-        
+
         dispatch(action)
       }
     )
-    
+
   }, [])
 
-  const fetchAllNotes = async()=>{
+  const fetchAllNotes = async () => {
     let response = await fetch('http://localhost:8081/api/v1/get/todos')
     let data = await response.json()
     return data
   }
 
-  const onCheckbox = async(event, note) => {
+
+  const onDelete = async (note) => {
+    let response = await fetch(`http://localhost:8081/api/v1/delete/todo/${note.id}`,
+      {
+        method: 'DELETE',
+      })
+
+    if (response.status === 200) {
+      dispatch({
+        type: `remove-note`,
+        payload: note
+      })
+    }
+  }
+
+  const onCatDelete = async (categoryDelete) => {
+    let response = await fetch(`http://localhost:8081/api/v1/delete/category/${categoryDelete.id}`,
+      {
+        method: `DELETE`,
+      })
+
+    if (response.status === 200) {
+      dispatch({
+        type: `remove-category`,
+        payload: categoryDelete
+      })
+    }
+
+  }
+
+  const onEdit = (event) => {
+    setTodo(event)
+    const inputUpdate = document.querySelector(`#inp-edit-${event.categoryid.id}`)
+    const divToHide = document.querySelector(`#div-${event.categoryid.id}`)
+    const titleToDo = event.todo
+    inputUpdate.value = titleToDo
+    divToHide.style.display = 'block'
+
+  }
+
+  const onCheckbox = async (event, note) => {
     const checked = event.currentTarget.checked;
 
-    let todoCheckUpdated = {...note, done: checked}
+    let todoCheckUpdated = { ...note, done: checked }
 
-    let todoUpdatePromise = await fetch('http://localhost:8081/api/v1/update/todo', 
+    let todoUpdatePromise = await fetch('http://localhost:8081/api/v1/update/todo',
       {
         method: 'PUT',
         headers: {
@@ -48,83 +90,68 @@ const ListOfToDo = () => {
       payload: todoUpdated
     })
   }
+  const [todo, setTodo] = useState('')
 
-  const onDelete = async (note) => {
-    let response = await fetch(`http://localhost:8081/api/v1/delete/todo/${note.id}`, 
-    {
-      method: 'DELETE',
+  const onUpdateNote = async (todo) => {
+    if (!todo) {
+      alert("Select one to do for edit")
+    }
+    const inputUpdate = document.querySelector(`#inp-edit-${todo.categoryid.id}`)
+    const divToHide = document.querySelector(`#div-${todo.categoryid.id}`)
+    console.log("TASK SELECTED: " + JSON.stringify(todo));
+    const todoEdit = inputUpdate.value
+    let todoTextToUpdate = { ...todo, todo: todoEdit }
+    let todoUpdateTextPromise = await fetch(`http://localhost:8081/api/v1/update/todo`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify(todoTextToUpdate)
+      })
+
+    let todoTextUpdated = await todoUpdateTextPromise.json()
+
+    dispatch({
+      type: `update-note`,
+      payload: todoTextUpdated
     })
 
-    if(response.status === 200){
-      dispatch({
-        type: `remove-note`,
-        payload: note
-      })
-    }    
-  }
-  
-  const onCatDelete = async (categoryDelete)=>{
-    let response = await fetch(`http://localhost:8081/api/v1/delete/category/${categoryDelete.id}`,
-    {
-      method: `DELETE`,
-    })
+    inputUpdate.value = ''
+    divToHide.style.display = 'none'
 
-    if(response.status === 200){
-      dispatch({
-        type: `remove-category`,
-        payload: categoryDelete
-      })
-    }    
-    
   }
-  const [categoryid, setCategoryid] = useState('')
-  const inputUpdate = document.querySelector(`inp-edit-${categoryid}`)
-  
-  const onEdit = (event, note) => {
-    // event.preventDefault();
-    //lert("here onedit")
-    console.log(event.todo)
-    // setCategoryid(category.id)
-    const titleToDo = event.todo;    
-    inputUpdate.value(titleToDo)
 
-    // dispatch({
-    //   type: `update-note`,
-    //   payload: {...note,
-    //   todo: titleToDo}
-    // })
-  }
 
 
   return (
     <>
-    {state.listCategories.map(category => {
-      
-      return <div key={category.id}> 
-      <h3 style={{display: 'inline-block'}}>Category: {category.category}</h3>
-      <button onClick={()=> onCatDelete(category)}>Delete</button>
-      <Form  category={category.id}/>
-      <div /*style={{display: 'none'}}*/>
-        <input  id={`inp-edit-${category.id}`} value={""}></input>
-        <button>Update</button>
-      </div>
-      <ul>
-        {state.listOfNotes.map(note => {
-          if(note.categoryid.id === category.id){
-            return <li style={note.done?{textDecoration: 'line-through'}:{}} key={note.id}>
-            {note.todo} 
-            <input onChange={(event) => onCheckbox(event, note)} type="checkbox" checked={note.done} />
-            <button onClick={() => onDelete(note)}>Delete</button>
-            <button onClick={() => onEdit(note)}>Edit</button>
-          </li>
-          }
-          
-        })}
-      </ul>
-      
-    </div>
-    })}
-    </>    
+      {state.listCategories.map(category => {
+
+        return <div key={category.id}>
+          <h3 style={{ display: 'inline-block' }}>Category: {category.category}</h3>
+          <button onClick={() => onCatDelete(category)}>Delete</button>
+          <Form category={category.id} />
+          <div style={{display: 'none'}} id={`div-${category.id}`}>
+            <label>Text to uptade </label>
+            <input id={`inp-edit-${category.id}`} ></input>
+            <button onClick={(event) => onUpdateNote(todo)}>Update</button>
+          </div>
+          <ul>
+            {state.listOfNotes.map(note => {
+              if (note.categoryid.id === category.id) {
+                return <li style={note.done ? { textDecoration: 'line-through' } : {}} key={note.id}>
+                  {note.todo}
+                  <input onChange={(event) => onCheckbox(event, note)} type="checkbox" checked={note.done} />
+                  <button onClick={() => onDelete(note)}>Delete</button>
+                  <button onClick={() => onEdit(note)}>Edit</button>
+                </li>
+              }
+            })}
+          </ul>
+        </div>
+      })}
+    </>
   )
 }
 
