@@ -5,14 +5,12 @@ function reducer(state, action){
         ...state, 
         listCategories: action.payload
       }
-      console.log(state.listCategories);
       return stateWithAllCategories
     case `get-notes`:
       const stateWithAllTheNotes = {
         ...state,
         listOfNotes: action.payload
       }
-      console.log(state.listOfNotes);
       return stateWithAllTheNotes
     case `add-note`:
       const newNote = {
@@ -25,6 +23,10 @@ function reducer(state, action){
         ...state, listOfNotes: newListOfNotesAddesdOne
       }
       return newStateAddNote
+    case `remove-category`:
+      const newCategoryListWithoutPayloadCategory = state.listCategories.filter(category => category.id !== action.payload.id)
+      const newStateWithCategoryDeleted = {...state, listCategories: newCategoryListWithoutPayloadCategory}
+      return newStateWithCategoryDeleted
     case `remove-note`:
       const newListOfNotesWithoutPayloadNote = state.listOfNotes.filter(note => note.id !== action.payload.id)
       const newStateWithNoteDeleted = {...state, listOfNotes: newListOfNotesWithoutPayloadNote}
@@ -40,7 +42,7 @@ function reducer(state, action){
       return newStateModifiedCheckbox
     case `add-category`:
       const newCategory = {
-        id: Math.floor(Math.random()*100000),
+        id: action.payload.id,
         category: action.payload.category
       }
       const newListOfCategories = [...state.listCategories, newCategory]

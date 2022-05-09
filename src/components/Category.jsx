@@ -57,7 +57,6 @@ const Category = ({ onAdd }) => {
 
     onAdd({ category })
       setCategory('')
-    console.log("categorySaved content" + JSON.stringify(categorySaved) + "State content" + JSON.stringify(state));
   }
 
   return (

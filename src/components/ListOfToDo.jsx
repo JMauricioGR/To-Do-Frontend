@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Store } from './StoreProvider'
 import Form from './Form'
+import Category from './Category'
 
 const ListOfToDo = () => {
 
@@ -54,41 +55,61 @@ const ListOfToDo = () => {
       method: 'DELETE',
     })
 
-    console.log(response);
     if(response.status === 200){
       dispatch({
         type: `remove-note`,
         payload: note
       })
-    }
-
-    
+    }    
   }
-
-  const onEdit = (event, note) => {
-    
-    const titleToDo = event.todo;    
-
-    dispatch({
-      type: `update-note`,
-      payload: {...note,
-      todo: titleToDo}
+  
+  const onCatDelete = async (categoryDelete)=>{
+    let response = await fetch(`http://localhost:8081/api/v1/delete/category/${categoryDelete.id}`,
+    {
+      method: `DELETE`,
     })
+
+    if(response.status === 200){
+      dispatch({
+        type: `remove-category`,
+        payload: categoryDelete
+      })
+    }    
+    
+  }
+  const [categoryid, setCategoryid] = useState('')
+  const inputUpdate = document.querySelector(`inp-edit-${categoryid}`)
+  
+  const onEdit = (event, note) => {
+    // event.preventDefault();
+    //lert("here onedit")
+    console.log(event.todo)
+    // setCategoryid(category.id)
+    const titleToDo = event.todo;    
+    inputUpdate.value(titleToDo)
+
+    // dispatch({
+    //   type: `update-note`,
+    //   payload: {...note,
+    //   todo: titleToDo}
+    // })
   }
 
-
-  const [categoryid, setCategoryid] = useState('')
 
   return (
     <>
     {state.listCategories.map(category => {
+      
       return <div key={category.id}> 
       <h3 style={{display: 'inline-block'}}>Category: {category.category}</h3>
-      <button>Delete</button>
+      <button onClick={()=> onCatDelete(category)}>Delete</button>
       <Form  category={category.id}/>
+      <div /*style={{display: 'none'}}*/>
+        <input  id={`inp-edit-${category.id}`} value={""}></input>
+        <button>Update</button>
+      </div>
       <ul>
         {state.listOfNotes.map(note => {
-          console.log(JSON.stringify(note) +"and the category data is: " + JSON.stringify(category));
           if(note.categoryid.id === category.id){
             return <li style={note.done?{textDecoration: 'line-through'}:{}} key={note.id}>
             {note.todo} 
